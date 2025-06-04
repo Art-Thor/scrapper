@@ -1,12 +1,14 @@
 """
-Scraper modules for different quiz platforms.
+Scraper modules for different quiz websites.
 
-This package contains scraper implementations for various quiz websites:
-- BaseScraper: Abstract base class for all scrapers
-- FunTriviaScraper: FunTrivia.com specific implementation
+This package contains scraper implementations for various quiz platforms,
+with the main focus on FunTrivia.com.
 """
 
-from .base import BaseScraper
 from .funtrivia import FunTriviaScraper
+from .base import BaseScraper
 
-__all__ = ['BaseScraper', 'FunTriviaScraper'] 
+__all__ = [
+    'FunTriviaScraper',
+    'BaseScraper'
+] 

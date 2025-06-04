@@ -810,3 +810,166 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Persistent question indexing
 - CSV append/overwrite modes
 - Enhanced troubleshooting documentation 
+
+## 🔍 Category Collection and Management
+
+### The Problem with Unknown Categories
+
+Previously, when the scraper encountered unknown categories, it would automatically assign them to "General" (for topics) or "Culture" (for domains). This approach becomes problematic for scaling as it leads to:
+
+- Inaccurate categorization
+- Data pollution with generic categories
+- Difficulty in proper organization
+
+### The Solution: Two-Stage Process
+
+The new system implements a two-stage process:
+
+1. **Category Collection Stage**: Collect all categories and topics from the site
+2. **Mapping and Scraping Stage**: Only scrape with properly mapped categories
+
+### Step 1: Collect All Categories
+
+Run the category collection script to discover all categories on the site:
+
+```bash
+# Collect categories and save to both JSON and CSV
+python collect_categories.py --output-format both --output-dir output
+
+# Or just JSON
+python collect_categories.py --output-format json
+
+# Or just CSV for easier manual review
+python collect_categories.py --output-format csv
+```
+
+Alternatively, use the main script with the `--dump-categories-only` flag:
+
+```bash
+# Using main script
+python src/main.py --dump-categories-only --category-output-format both
+
+# With custom output directory
+python src/main.py --dump-categories-only --category-output-dir category_analysis
+```
+
+This will generate several files:
+- `all_categories.json` - Complete collected data in JSON format
+- `collected_domains.csv` - All discovered domains with counts
+- `collected_topics.csv` - All discovered topics with counts  
+- `domain_topic_combinations.csv` - How domains and topics are combined
+- `category_urls.csv` - All category URLs found
+
+### Step 2: Review and Update Mappings
+
+1. **Review the generated files** to see all categories discovered on the site
+2. **Update `config/mappings.json`** to include the new categories in appropriate mappings
+3. **Add unknown categories** to the correct domain/topic mappings
+
+Example of updating mappings:
+
+```json
+{
+  "domain_mapping": {
+    "Nature": ["animals", "wildlife", "pets", "new_nature_category"],
+    "Science": ["science", "physics", "chemistry", "new_science_category"]
+  },
+  "topic_mapping": {
+    "Animals": ["animals", "pets", "mammals", "new_animal_topic"],
+    "Space": ["astronomy", "space", "planets", "new_space_topic"]
+  }
+}
+```
+
+### Step 3: Enable Strict Mapping Mode
+
+Once your mappings are complete, enable strict mapping mode to ensure data quality:
+
+```bash
+# Enable strict mapping via command line
+python src/main.py --strict-mapping
+
+# Or update config/settings.json
+{
+  "scraper": {
+    "strict_mapping": true
+  }
+}
+```
+
+With strict mapping enabled:
+- ✅ Known categories are mapped correctly
+- ❌ Unknown categories cause the script to crash with helpful error messages
+- 🔍 Error messages tell you exactly what to add to your mappings
+
+### Example Workflow
+
+1. **Initial category discovery**:
+   ```bash
+   python collect_categories.py --output-format csv
+   ```
+
+2. **Review collected categories**:
+   ```bash
+   # Review the generated CSV files
+   cat output/collected_domains.csv
+   cat output/collected_topics.csv
+   ```
+
+3. **Update mappings** in `config/mappings.json`
+
+4. **Test with strict mapping**:
+   ```bash
+   python src/main.py --strict-mapping --max-questions 10 --dry-run
+   ```
+
+5. **If errors occur**, update mappings and repeat step 4
+
+6. **Run full scraping** once all categories are mapped:
+   ```bash
+   python src/main.py --strict-mapping
+   ```
+
+### Benefits of This Approach
+
+- 📊 **Data Quality**: Ensures all categories are properly mapped
+- 🚀 **Scalability**: Easy to add new categories as the site evolves  
+- 🔍 **Transparency**: See exactly what categories exist on the site
+- ⚡ **Error Prevention**: Catches unmapped categories before data corruption
+- 📈 **Analytics**: Understand the distribution of categories across the site
+
+### Configuration Options
+
+In `config/settings.json`:
+
+```json
+{
+  "scraper": {
+    "strict_mapping": false  // Set to true to enable strict mode
+  }
+}
+```
+
+### CLI Arguments
+
+```bash
+# Category collection
+--dump-categories-only          # Run only category collection
+--category-output-dir DIR       # Where to save category files  
+--category-output-format FORMAT # json, csv, or both
+
+# Strict mapping
+--strict-mapping               # Enable strict mapping mode
+```
+
+### Error Messages
+
+When strict mapping is enabled and an unknown category is encountered:
+
+```
+ValueError: Unknown domain encountered: 'new_domain'. 
+Please add this to the domain_mapping in config/mappings.json 
+or run with --dump-categories-only to collect all categories first.
+```
+
+This makes it clear what needs to be added to your mappings. 

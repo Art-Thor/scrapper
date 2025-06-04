@@ -1,34 +1,125 @@
 {
     "difficulty_mapping": {
-        "Easy": ["easy", "beginner", "simple", "basic", "novice"],
-        "Normal": ["normal", "medium", "average", "intermediate", "moderate"],
-        "Hard": ["hard", "difficult", "challenging", "expert", "advanced", "tough"]
+        "Easy": ["easy", "beginner", "simple", "basic", "novice", "for children", "for_children", "kids"],
+        "Normal": ["normal", "medium", "average", "intermediate", "moderate", "general"],
+        "Hard": ["hard", "difficult", "challenging", "expert", "advanced", "tough", "hardcore"]
     },
     "domain_mapping": {
-        "Nature": ["nature", "animals", "wildlife", "environment", "biology", "ecology"],
-        "Science": ["science", "physics", "chemistry", "astronomy", "space", "technology", "computers", "mathematics", "math", "sci", "tech", "forchildren"],
-        "Geography": ["geography", "countries", "world", "travel", "places", "cities", "capitals", "maps"],
-        "Culture": ["culture", "literature", "books", "art", "music", "movies", "television", "celebrities", "entertainment", "humanities", "people", "tv", "film", "general", "videogames"],
-        "Sports": ["sports", "football", "basketball", "baseball", "soccer", "olympics", "athletics", "games"],
-        "History": ["history", "historical", "wars", "ancient", "medieval", "modern", "world war", "politics", "government"]
+        "Nature": [
+            "nature", "animals", "wildlife", "environment", "biology", "ecology", 
+            "animal trivia", "creature trivia"
+        ],
+        "Science": [
+            "science", "physics", "chemistry", "astronomy", "space", "technology", 
+            "computers", "mathematics", "math", "sci", "tech", "science trivia",
+            "medical", "health", "engineering", "scientific trivia"
+        ],
+        "Geography": [
+            "geography", "countries", "world", "travel", "places", "cities", "capitals", 
+            "maps", "geography trivia", "world trivia", "travel trivia", "global trivia"
+        ],
+        "Culture": [
+            "culture", "literature", "books", "art", "music", "movies", "television", 
+            "celebrities", "entertainment", "humanities", "people", "tv", "film", 
+            "general", "videogames", "video_games", "video games", "gaming",
+            "tv trivia", "movie trivia", "music trivia", "entertainment trivia",
+            "celebrity trivia", "literature trivia", "book trivia", "art trivia",
+            "general trivia", "pop culture", "cultural trivia"
+        ],
+        "Sports": [
+            "sports", "football", "basketball", "baseball", "soccer", "olympics", 
+            "athletics", "games", "competition", "sports trivia", "athletic trivia"
+        ],
+        "History": [
+            "history", "historical", "wars", "ancient", "medieval", "modern", 
+            "world war", "politics", "government", "history trivia", "historical trivia",
+            "political trivia", "war trivia"
+        ],
+        "Religion": [
+            "religion", "christianity", "islam", "judaism", "buddhism", "hinduism",
+            "biblical", "spiritual", "faith", "religious trivia", "bible trivia"
+        ],
+        "Education": [
+            "education", "learning", "academic", "school", "university", "college", 
+            "brain teasers", "educational trivia", "academic trivia", "brainteasers",
+            "brain_teasers"
+        ]
     },
     "topic_mapping": {
-        "General": ["general", "mixed", "various", "miscellaneous", "other", "trivia", "i know this answer", "breaking the bond", "real or figments of imagination", "you may be a geek if", "a touch of saintliness"],
-        "Animals": ["animals", "pets", "mammals", "birds", "fish", "insects", "reptiles", "wildlife"],
-        "Music": ["music", "songs", "bands", "artists", "classical", "rock", "pop", "jazz", "honesty", "truth", "integrity", "the divine miss m", "we'll be together"],
-        "Movies": ["movies", "films", "cinema", "actors", "directors", "hollywood", "musicals", "they'll take your soul", "'80s horror part 2", "80s horror part 2", "a 'horror'ble mixture part 11", "a horrorble mixture part 11", "horror", "four horror franchises by subtitles"],
-        "Literature": ["literature", "books", "authors", "novels", "poetry", "writers", "troy", "baghdad", "wwii novel match", "the art of the historical novel", "literature from troy to baghdad", "historical fiction"],
-        "Science": ["science", "physics", "chemistry", "biology", "astronomy", "technology", "the science ride", "a science quiz for kids", "extending the science branch", "fire and ice - the volcanoes of iceland"],
-        "History": ["history", "historical", "ancient", "medieval", "wars", "politics", "queen", "elizabeth", "christmas time for bribery blago"],
-        "Geography": ["geography", "countries", "cities", "capitals", "world", "travel", "europe", "places in u.s. named after kings and queens", "places in us named after kings and queens", "recombined states", "iceland - way up north", "great places in america"],
-        "Sports": ["sports", "football", "basketball", "baseball", "soccer", "olympics", "catch", "special day nfl players", "nfl stars: other leagues", "nfl stars other leagues", "name that football position", "ea sports college football 25"],
-        "Food": ["food", "cooking", "cuisine", "recipes", "restaurants", "drinks"],
-        "Art": ["art", "painting", "sculpture", "artists", "museums", "visual arts", "stick a pin in it", "prick up your ears"],
-        "Television": ["television", "tv", "shows", "series", "programs", "broadcasting"],
-        "Games": ["games", "board games", "video games", "puzzles", "card games", "swing states", "swing states 2", "swing states 3", "zbecks add rs and anagram", "add a state", "add ft for fun trivia", "kids scrambles plants", "civilization vi - the principles", "civilization vi the principles", "new super mario bros. u or new super luigi u", "ten video game characters"],
-        "Religion": ["religion", "christianity", "islam", "judaism", "buddhism", "hinduism"],
-        "Mythology": ["mythology", "myths", "legends", "folklore", "gods", "goddesses"],
-        "People": ["people", "celebrities", "biography", "famous", "personalities", "people's sexiest man not alive", "peoples sexiest man not alive", "super star", "funtrivia celebrities mix: vol 23", "celebrities born in the great state of oregon", "famous folks who share my birthday"],
-        "Entertainment": ["entertainment", "common", "something in common", "tattoos - history, culture and health risks", "tattoos history culture and health risks", "body piercings", "tattoos"]
+        "General": [
+            "general", "mixed", "various", "miscellaneous", "other", "trivia", 
+            "general trivia", "mixed trivia", "variety trivia"
+        ],
+        "Animals": [
+            "animals", "pets", "mammals", "birds", "fish", "insects", "reptiles", 
+            "wildlife", "animal trivia", "pet trivia", "creature trivia"
+        ],
+        "Music": [
+            "music", "songs", "bands", "artists", "classical", "rock", "pop", "jazz", 
+            "music trivia", "song trivia", "band trivia", "musical trivia"
+        ],
+        "Movies": [
+            "movies", "films", "cinema", "actors", "directors", "hollywood",
+            "movie trivia", "film trivia", "cinema trivia", "actor trivia"
+        ],
+        "Television": [
+            "television", "tv", "shows", "series", "programs", "broadcasting",
+            "tv trivia", "television trivia", "show trivia", "series trivia"
+        ],
+        "Literature": [
+            "literature", "books", "authors", "novels", "poetry", "writers",
+            "literature trivia", "book trivia", "author trivia", "novel trivia"
+        ],
+        "Science": [
+            "science", "physics", "chemistry", "biology", "astronomy", "technology", 
+            "science trivia", "physics trivia", "chemistry trivia", "biology trivia",
+            "astronomy trivia", "technology trivia"
+        ],
+        "History": [
+            "history", "historical", "ancient", "medieval", "wars", "politics",
+            "history trivia", "historical trivia", "war trivia", "political trivia"
+        ],
+        "Geography": [
+            "geography", "countries", "cities", "capitals", "world", "travel",
+            "geography trivia", "world trivia", "country trivia", "city trivia",
+            "global trivia"
+        ],
+        "Sports": [
+            "sports", "football", "basketball", "baseball", "soccer", "olympics",
+            "sports trivia", "football trivia", "basketball trivia", "olympic trivia"
+        ],
+        "Food": [
+            "food", "cooking", "cuisine", "recipes", "restaurants", "drinks",
+            "food trivia", "cooking trivia", "cuisine trivia"
+        ],
+        "Art": [
+            "art", "painting", "sculpture", "artists", "museums", "visual arts",
+            "art trivia", "artist trivia", "painting trivia"
+        ],
+        "Games": [
+            "games", "board games", "video games", "videogames", "video_games", 
+            "puzzles", "card games", "gaming", "game trivia", "video game trivia",
+            "brainteasers", "brain teasers", "brain_teasers"
+        ],
+        "Religion": [
+            "religion", "christianity", "islam", "judaism", "buddhism", "hinduism",
+            "biblical", "spiritual", "faith", "religious trivia", "bible trivia"
+        ],
+        "People": [
+            "people", "celebrities", "biography", "famous", "personalities",
+            "people trivia", "celebrity trivia", "biography trivia"
+        ],
+        "Entertainment": [
+            "entertainment", "pop culture", "show business", "performance",
+            "entertainment trivia", "pop culture trivia"
+        ],
+        "Technology": [
+            "technology", "computers", "internet", "software", "hardware", "digital",
+            "technology trivia", "computer trivia", "internet trivia"
+        ],
+        "Health": [
+            "health", "medical", "medicine", "wellness", "fitness",
+            "health trivia", "medical trivia", "fitness trivia"
+        ]
     }
 } 

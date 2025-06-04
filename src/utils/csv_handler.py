@@ -3,6 +3,15 @@ import os
 from typing import List, Dict, Any, Set
 import logging
 from pathlib import Path
+import sys
+
+# Handle imports whether running as module or directly
+try:
+    from ..constants import CSV_COLUMNS
+except ImportError:
+    # Add parent directory to path for direct execution
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    from constants import CSV_COLUMNS
 
 class CSVHandler:
     """Handles CSV operations with appending capability and duplicate prevention."""
@@ -47,24 +56,7 @@ class CSVHandler:
     
     def get_csv_columns(self, question_type: str) -> List[str]:
         """Get the required column structure for each question type."""
-        column_structures = {
-            'multiple_choice': [
-                'Key', 'Domain', 'Topic', 'Difficulty', 'Question',
-                'Option1', 'Option2', 'Option3', 'Option4', 
-                'CorrectAnswer', 'Hint', 'ImagePath'
-            ],
-            'true_false': [
-                'Key', 'Domain', 'Topic', 'Difficulty', 'Question',
-                'Option1', 'Option2', 'CorrectAnswer', 'Hint'
-            ],
-            'sound': [
-                'Key', 'Domain', 'Topic', 'Difficulty', 'Question',
-                'Option1', 'Option2', 'Option3', 'Option4',
-                'CorrectAnswer', 'Hint', 'AudioPath'
-            ]
-        }
-        
-        return column_structures.get(question_type, column_structures['multiple_choice'])
+        return CSV_COLUMNS.get(question_type, CSV_COLUMNS['multiple_choice'])
     
     def ensure_csv_structure(self, df: pd.DataFrame, question_type: str) -> pd.DataFrame:
         """Ensure DataFrame has all required columns in the correct order."""

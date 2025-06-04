@@ -1,10 +1,11 @@
 import asyncio
 import argparse
 import json
-import pandas as pd
+import pandas as pd # type: ignore
 from pathlib import Path
 import logging
 import os
+import sys
 from typing import Dict, List, Any
 from scraper.funtrivia import FunTriviaScraper
 from utils.sheets import GoogleSheetsUploader
@@ -44,6 +45,7 @@ def format_question_data_enhanced(question: Dict[str, Any]) -> Dict[str, Any]:
         'Option4': '',
         'CorrectAnswer': question.get('correct_answer', ''),
         'Hint': question.get('hint', ''),
+        'Description': question.get('description', ''),
         'ImagePath': '',
         'AudioPath': ''
     }
@@ -102,6 +104,15 @@ def format_question_data_enhanced(question: Dict[str, Any]) -> Dict[str, Any]:
         # Remove common prefixes and suffixes
         hint = hint.replace('Explanation:', '').replace('Hint:', '').strip()
         formatted['Hint'] = hint
+
+    # Clean up description text
+    if formatted['Description']:
+        description = formatted['Description'].strip()
+        # Remove common prefixes and suffixes
+        description = description.replace('Explanation:', '').replace('Description:', '').replace('Summary:', '').strip()
+        # Remove quiz-specific text patterns
+        description = description.replace('Interesting Information:', '').replace('Fun Fact:', '').strip()
+        formatted['Description'] = description
 
     return formatted
 
@@ -163,6 +174,52 @@ def run_pre_scrape_checks(config: Dict[str, Any], logger) -> bool:
     
     return True
 
+async def run_category_collection(config_file: str, output_dir: str = "output", output_format: str = "both"):
+    """Run the category collection process."""
+    # Import here to avoid circular imports
+    sys.path.append('.')
+    
+    try:
+        from collect_categories import CategoryCollector
+        
+        print("🔍 Starting category collection mode...")
+        
+        # Ensure output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs('logs', exist_ok=True)
+        
+        collector = CategoryCollector(config_file)
+        
+        print("Collecting all categories from the site...")
+        await collector.collect_all_categories()
+        
+        # Save data in requested format(s)
+        if output_format in ['json', 'both']:
+            json_file = Path(output_dir) / "all_categories.json"
+            collector.save_to_json(str(json_file))
+        
+        if output_format in ['csv', 'both']:
+            collector.save_to_csv(output_dir)
+        
+        # Print summary
+        collector.print_summary()
+        
+        print(f"\n✅ Category collection completed successfully!")
+        print(f"📁 Files saved to: {output_dir}/")
+        print(f"📝 Review the collected categories and update your mappings accordingly.")
+        print(f"💡 After updating mappings, run the main parser with the updated configuration.")
+        
+        return True
+        
+    except ImportError as e:
+        print(f"❌ Error: Could not import category collector: {e}")
+        print("Make sure collect_categories.py is in the current directory.")
+        return False
+    except Exception as e:
+        print(f"❌ Error during category collection: {e}")
+        logging.getLogger(__name__).error(f"Category collection failed: {e}", exc_info=True)
+        return False
+
 async def main():
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='FunTrivia Quiz Scraper')
@@ -177,7 +234,29 @@ async def main():
     parser.add_argument('--validate-only', action='store_true', help='Only validate existing CSV files')
     parser.add_argument('--skip-validation', action='store_true', help='Skip data validation')
     parser.add_argument('--dry-run', action='store_true', help='Simulate scraping without saving data')
+    
+    # New category collection arguments
+    parser.add_argument('--dump-categories-only', action='store_true', 
+                       help='Run category collection mode only (collect all categories from the site)')
+    parser.add_argument('--category-output-dir', type=str, default='output',
+                       help='Output directory for category collection files')
+    parser.add_argument('--category-output-format', choices=['json', 'csv', 'both'], default='both',
+                       help='Output format for category collection')
+    
+    # Strict mapping mode
+    parser.add_argument('--strict-mapping', action='store_true',
+                       help='Enable strict mapping mode - crash on unknown categories instead of using fallbacks')
+    
     args = parser.parse_args()
+
+    # Handle category collection mode
+    if args.dump_categories_only:
+        success = await run_category_collection(
+            config_file=args.config,
+            output_dir=args.category_output_dir,
+            output_format=args.category_output_format
+        )
+        return 0 if success else 1
 
     # Load configuration
     try:
@@ -224,6 +303,8 @@ async def main():
         config['scraper']['max_questions_per_run'] = args.max_questions
     if args.concurrency:
         config['scraper']['concurrency'] = args.concurrency
+    if args.strict_mapping:
+        config['scraper']['strict_mapping'] = True
 
     # Run pre-scrape checks
     if not run_pre_scrape_checks(config, logger):
