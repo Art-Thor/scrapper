@@ -1,0 +1,76 @@
+[
+  {
+    "session_id": "20250608_194705",
+    "start_time": "2025-06-08T19:47:05.270752",
+    "end_time": "2025-06-08T21:04:30.725919",
+    "duration_seconds": 4645.455179929733,
+    "questions_scraped": 167,
+    "questions_by_type": {
+      "multiple_choice": 164,
+      "true_false": 3,
+      "sound": 0
+    },
+    "pages_visited": 0,
+    "media_downloaded": {
+      "images": 0,
+      "audio": 0
+    },
+    "errors": [],
+    "warnings": [],
+    "performance": {
+      "avg_questions_per_minute": 2.15696148355266,
+      "avg_page_load_time": 0,
+      "peak_memory_mb": 107.875,
+      "cpu_usage_percent": 0.0
+    },
+    "rate_limiting": {
+      "total_delays": 0,
+      "total_delay_time": 0
+    },
+    "validation": {
+      "valid_questions": 117,
+      "invalid_questions": 50,
+      "warnings": 50
+    }
+  },
+  {
+    "session_id": "20250609_103758",
+    "start_time": "2025-06-09T10:37:58.971653",
+    "end_time": "2025-06-09T10:38:16.689483",
+    "duration_seconds": 17.71784019470215,
+    "questions_scraped": 0,
+    "questions_by_type": {
+      "multiple_choice": 0,
+      "true_false": 0,
+      "sound": 0
+    },
+    "pages_visited": 0,
+    "media_downloaded": {
+      "images": 0,
+      "audio": 0
+    },
+    "errors": [
+      {
+        "timestamp": "2025-06-09T10:38:16.689476",
+        "type": "scraping_error",
+        "message": "RetryError[<Future at 0x12754d190 state=finished raised Exception>]"
+      }
+    ],
+    "warnings": [],
+    "performance": {
+      "avg_questions_per_minute": 0,
+      "avg_page_load_time": 0,
+      "peak_memory_mb": 0,
+      "cpu_usage_percent": 0
+    },
+    "rate_limiting": {
+      "total_delays": 0,
+      "total_delay_time": 0
+    },
+    "validation": {
+      "valid_questions": 0,
+      "invalid_questions": 0,
+      "warnings": 0
+    }
+  }
+]

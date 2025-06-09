@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Main scraper service
+  funtrivia-scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: funtrivia-scraper
+    volumes:
+      - ./output:/app/output
+      - ./assets:/app/assets
+      - ./logs:/app/logs
+      - ./credentials:/app/credentials
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Default: safe batch mode
+    command: ["--mode", "batch", "--batch-size", "2", "--parallel-jobs", "1", "--questions-per-batch", "50"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "docker-entrypoint.py", "--mode", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Monitor service
+  funtrivia-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: funtrivia-monitor
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+    command: ["--mode", "monitor"]
+    profiles:
+      - monitoring
+    depends_on:
+      - funtrivia-scraper
+
+  # Fast scraper service
+  funtrivia-fast:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: funtrivia-fast
+    volumes:
+      - ./output:/app/output
+      - ./assets:/app/assets
+      - ./logs:/app/logs
+    command: ["--mode", "batch", "--batch-size", "3", "--parallel-jobs", "2", "--questions-per-batch", "100", "--speed-profile", "fast"]
+    profiles:
+      - fast
+    restart: unless-stopped
+
+  # Single mode service
+  funtrivia-single:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: funtrivia-single
+    volumes:
+      - ./output:/app/output
+      - ./assets:/app/assets
+      - ./logs:/app/logs
+    command: ["--mode", "single", "--max-questions", "200", "--speed-profile", "fast"]
+    profiles:
+      - single 
